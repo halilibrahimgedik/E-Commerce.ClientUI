@@ -14,10 +14,10 @@ export class LayoutComponent implements OnInit{
   }
 
   ngOnInit(): void {
-   this.alertify.message("Alertify Servisi test ediyoruz", {
-    messageType : MessageType.Error,
-    position : Position.Top_Center,
-    delay : 3,
-   });
+  //  this.alertify.message("Alertify Servisi test ediyoruz", {
+  //   messageType : MessageType.Error,
+  //   position : Position.Top_Center,
+  //   delay : 3,
+  //  });
   }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CustomToastrService, ToastrMessageType, ToastrPosition } from './services/ui/custom-toastr.service';
-// import $ from 'jquery';
-declare var $: any;
+import $ from 'jquery';
+// declare var $: any;
 
 
 @Component({
@@ -16,11 +16,11 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.toastrService.message("First Message !",{
-      messageType:ToastrMessageType.Warning,
-      Title:"Test Başlık", 
-      Position : ToastrPosition.Top_Right,
-      TimeOut : 1000
-    });
+    // jQuery ile veri çekme
+    // $(document).ready(() => {
+    //   $.get("https://localhost:7220/api/Tests", function(data) {
+    //     console.log(data);
+    //   });
+    // });
   }
 }
