@@ -4,4 +4,10 @@ body{
     padding: 0;
 }
 
+.div-flex{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width:inherit;
+}
 @import "@angular/material/prebuilt-themes/magenta-violet.css";

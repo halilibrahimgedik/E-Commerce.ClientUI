@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { BaseComponent, SpinnerType } from '../../../base/base.component';
+import { time } from 'console';
 
 @Component({
   selector: 'app-customers',
@@ -13,6 +14,6 @@ export class CustomersComponent extends BaseComponent {
   }
 
   ngOnInit(): void {
-    this.showSpinner(SpinnerType.ball_spin_clockwise);
+    this.showSpinner(SpinnerType.ball_spin_clockwise, 500);
   }
 }

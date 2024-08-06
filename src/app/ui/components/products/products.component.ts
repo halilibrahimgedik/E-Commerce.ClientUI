@@ -13,6 +13,6 @@ export class ProductsComponent extends BaseComponent {
   }
 
   ngOnInit(): void {
-    this.showSpinner(SpinnerType.ball_spin_clockwise);
+    this.showSpinner(SpinnerType.ball_spin_clockwise, 500);
   }
 }
