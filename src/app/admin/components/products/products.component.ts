@@ -18,10 +18,10 @@ export class ProductsComponent extends BaseComponent {
     this.showSpinner(SpinnerType.ball_spin_clockwise, 500);
 
     // ! get request to api with Type
-    this.httpClientService.get<Product[]>({
-      controller: "Tests",
-    })
-    .subscribe(data => { console.log(data); });
+    // this.httpClientService.get<Product[]>({
+    //   controller: "Tests",
+    // })
+    // .subscribe(data => { console.log(data); });
 
     // ! post request to api
     // this.httpClientService.post({

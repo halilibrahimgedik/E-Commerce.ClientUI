@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { CustomHttpClientService } from '../custom-http-client.service';
 import { CreateProduct } from '../../../contracts/products/create_product';
-import { error } from 'node:console';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ListProduct } from '../../../contracts/products/list_product';
+import { firstValueFrom } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
@@ -34,4 +36,26 @@ export class ProductService {
       }
     })
   }
+
+  async getAll(successCallBack?: () => void, errorCallBack?: (errorMessage: string) => void): Promise<ListProduct[]> {
+
+    // HTTP isteğini yapar ve Observable'ı Promise'a dönüştürür
+    const promiseData: Promise<ListProduct[]> = firstValueFrom(
+      this.httpClientService.get<ListProduct[]>({
+        controller: "Tests"
+      })
+    );
+
+    // Promise'ı bekler, istek başarılımı kontrol eder ve veriyi döndürür
+    promiseData
+    .then( data => {
+      if(successCallBack)
+        successCallBack();
+      return data;
+    })
+    .catch((errorResponse: HttpErrorResponse)=> errorCallBack(errorResponse.message));
+
+    return await promiseData
+  }
+
 }
