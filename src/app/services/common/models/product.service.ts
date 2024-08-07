@@ -56,7 +56,7 @@ export class ProductService {
         successCallBack();
       return data;
     })
-    .catch((errorResponse: HttpErrorResponse)=> errorCallBack(errorResponse.message));
+    .catch((errorResponse: HttpErrorResponse) => errorCallBack(errorResponse.message));
 
     return await promiseData
   }
