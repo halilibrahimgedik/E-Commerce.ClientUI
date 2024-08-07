@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ProductService } from '../../../../services/common/models/product.service';
 import { CreateProduct } from '../../../../contracts/products/create_product';
 import { BaseComponent, SpinnerType } from '../../../../base/base.component';
@@ -17,8 +17,9 @@ export class CreateComponent extends BaseComponent {
     super(spinner);
   }
 
-  create(name: HTMLInputElement, stock: HTMLInputElement, price: HTMLInputElement)
-  {
+  @Output() emitProduct : EventEmitter<CreateProduct> = new EventEmitter();
+
+  create(name: HTMLInputElement, stock: HTMLInputElement, price: HTMLInputElement){
     this.showSpinner(SpinnerType.ball_Fussion);
 
     const product = new CreateProduct();
@@ -30,11 +31,12 @@ export class CreateComponent extends BaseComponent {
       this.hideSpinner(SpinnerType.ball_Fussion);
       this.alertifyService.dismiss(); // önceki mesajları silecek
 
-      this.alertifyService.message("Product Başarıyla Kaydedilmiştir.",
-        {
-          messageType: MessageType.Success,
-          position: Position.Top_Right
-        });
+      this.alertifyService.message("Product Başarıyla Kaydedilmiştir.", {
+        messageType: MessageType.Success,
+        position: Position.Top_Right
+      });
+
+      this.emitProduct.emit( new CreateProduct());
     }, 
     (errorMessages: string[]) => {
       this.hideSpinner(SpinnerType.ball_Fussion);

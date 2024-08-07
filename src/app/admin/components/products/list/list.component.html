@@ -1,36 +1,47 @@
 <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource">
-  
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-      </ng-container>
-  
-      <ng-container matColumnDef="stock">
-        <th mat-header-cell *matHeaderCellDef> Stock </th>
-        <td mat-cell *matCellDef="let element"> {{element.stock}} </td>
-      </ng-container>
-  
-      <ng-container matColumnDef="price">
-        <th mat-header-cell *matHeaderCellDef> Price </th>
-        <td mat-cell *matCellDef="let element"> {{element.price}} </td>
-      </ng-container>
+      
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Ad </th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
 
-      <ng-container matColumnDef="createdDate">
-        <th mat-header-cell *matHeaderCellDef> Created Date </th>
-        <td mat-cell *matCellDef="let element"> {{element.createdDate}} </td>
-      </ng-container>
+        <ng-container matColumnDef="stock">
+            <th mat-header-cell *matHeaderCellDef> Stok </th>
+            <td mat-cell *matCellDef="let element"> {{element.stock}} </td>
+        </ng-container>
 
-      <ng-container matColumnDef="updatedDate">
-        <th mat-header-cell *matHeaderCellDef> Updated Date</th>
-        <td mat-cell *matCellDef="let element"> {{element.updatedDate}} </td>
-      </ng-container>
-  
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef> Fiyat </th>
+            <td mat-cell *matCellDef="let element"> {{element.price}} ₺ </td>
+        </ng-container>
+
+        <ng-container matColumnDef="createdDate">
+            <th mat-header-cell *matHeaderCellDef> Oluşturulma Tarihi </th>
+            <td mat-cell *matCellDef="let element"> {{element.createdDate}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="updatedDate">
+            <th mat-header-cell *matHeaderCellDef> Son Güncelleme Tarihi</th>
+            <td mat-cell *matCellDef="let element"> {{element.updatedDate ? (element.updatedDate | date:"yyyy - MM - dd") :"-"}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="edit">
+            <th mat-header-cell *matHeaderCellDef> Edit </th>
+            <td mat-cell *matCellDef="let element"> <img src="/assets/edit.png" width="38" height="38"/> </td>
+        </ng-container>
+
+        <ng-container matColumnDef="delete">
+            <th mat-header-cell *matHeaderCellDef> Sil </th>
+            <td mat-cell *matCellDef="let element" appDelete2 [id]="element.id" (callProductsToUpdateTableData)="getProducts()">  </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
   
-    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+    <mat-paginator (page)="pageChanged()"
+                   [pageSizeOptions]="[5, 10, 20]"
                    showFirstLastButtons
                    aria-label="Select page of periodic elements">
     </mat-paginator>

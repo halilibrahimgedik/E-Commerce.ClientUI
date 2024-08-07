@@ -9,6 +9,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { provideHttpClient, withFetch } from '@angular/common/http';
+import { DeleteDirective } from './directives/admin/delete.directive';
+import { Delete2Directive } from './directives/admin/delete2.directive';
 
 @NgModule({
   declarations: [

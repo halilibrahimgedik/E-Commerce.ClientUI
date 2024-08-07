@@ -6,7 +6,9 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { AlertifyService, MessageType } from '../../../../services/admin/alertify.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { ListProductWithTotalCount } from '../../../../contracts/products/listproduct_with_totalcount';
 
+declare var $: any;
 
 @Component({
   selector: 'app-list',
@@ -14,20 +16,27 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrl: './list.component.scss'
 })
 export class ListComponent extends BaseComponent implements OnInit {
+
+  displayedColumns: string[] = ['name', 'stock', 'price', 'createdDate','updatedDate', 'edit', 'delete'];
+  dataSource: MatTableDataSource<ListProduct> = null;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   constructor(private productService: ProductService, spinner: NgxSpinnerService, private alertifyService: AlertifyService){
     super(spinner);
   }
 
-  displayedColumns: string[] = ['name', 'stock', 'price', 'createdDate','updatedDate'];
-  dataSource: MatTableDataSource<ListProduct> = null;
+  ngOnInit() 
+  {
+    this.getProducts();
+  }
 
-  
-  async ngOnInit() 
+  async getProducts(page?: number, sizePerPage?: number)
   {
     this.showSpinner(SpinnerType.ball_Atom);
 
-    const allProducts: ListProduct[] = await this.productService.getAll( ()=>
-      {
+    const allProducts: ListProductWithTotalCount = await this.productService.getAll(this.paginator ? this.paginator.pageIndex : 0,
+      this.paginator ? this.paginator.pageSize : 5,
+      ()=>{
         this.hideSpinner(SpinnerType.ball_Atom);
       },
       errorMessage => {
@@ -36,10 +45,11 @@ export class ListComponent extends BaseComponent implements OnInit {
       }
     );
 
-    this.dataSource = new MatTableDataSource<ListProduct>(allProducts)
-    this.dataSource.paginator = this.paginator;
+    this.dataSource = new MatTableDataSource<ListProduct>(allProducts.products)
+    this.paginator.length = allProducts.totalCount;
   }
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-
+  async pageChanged(){
+    await this.getProducts()
+  }
 }

@@ -11,13 +11,17 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatButtonModule} from '@angular/material/button';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableModule} from '@angular/material/table';
+import { DeleteDirective } from '../../../directives/admin/delete.directive';
+import { Delete2Directive } from '../../../directives/admin/delete2.directive';
 
 
 @NgModule({
   declarations: [
     ProductsComponent,
     CreateComponent,
-    ListComponent
+    ListComponent,
+    DeleteDirective,
+    Delete2Directive
   ],
   imports: [
     CommonModule,
@@ -31,7 +35,6 @@ import {MatTableModule} from '@angular/material/table';
     ]),
     MatTableModule,
     MatPaginatorModule,
-
   ]
 })
 export class ProductsModule { }

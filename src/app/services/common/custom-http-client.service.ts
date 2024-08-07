@@ -27,7 +27,8 @@ export class CustomHttpClientService {
     if(requestParameter.fullEndPoint)
       url = requestParameter.fullEndPoint;
     else
-      url= `${this.createUrl(requestParameter)}${id ? `/${id}` : ""}`;
+      url= `${this.createUrl(requestParameter)}${id ? `/${id}` : ""}${requestParameter.queryString ?
+      `?${requestParameter.queryString}`:""}`;
 
     return this.httpClient.get<T>(url, {headers: requestParameter.headers})
   }
@@ -38,7 +39,8 @@ export class CustomHttpClientService {
     if(requestParameter.fullEndPoint)
       url = requestParameter.fullEndPoint;
     else
-      url= `${this.createUrl(requestParameter)}`;
+      url= `${this.createUrl(requestParameter)}${requestParameter.queryString ?
+      `?${requestParameter.queryString}`:""}`;
 
     return this.httpClient.post<T>(url, body,{headers: requestParameter.headers})
   }
@@ -49,7 +51,8 @@ export class CustomHttpClientService {
     if(requestParameter.fullEndPoint)
       url = requestParameter.fullEndPoint;
     else
-      url = `${this.createUrl(requestParameter)}`;
+      url = `${this.createUrl(requestParameter)}${requestParameter.queryString ?
+        `?${requestParameter.queryString}`:""}`;
 
       return this.httpClient.put<T>(url, body, { headers: requestParameter.headers});
   }
@@ -60,7 +63,8 @@ export class CustomHttpClientService {
     if(requestParameter.fullEndPoint)
       url = requestParameter.fullEndPoint;
     else
-      url = `${this.createUrl(requestParameter)}/${id}`;
+      url = `${this.createUrl(requestParameter)}/${id}${requestParameter.queryString ?
+        `?${requestParameter.queryString}`:""}`;
 
     return this.httpClient.delete<T>(url, {headers: requestParameter.headers});
   }
@@ -71,6 +75,7 @@ export class RequestParameter
 {
   controller?: string;
   action?: string;
+  queryString?: string;
 
   headers?: HttpHeaders;
   baseUrl?: string; // uygulamanın dıında başka bir servis'e istek atabiliriz.
