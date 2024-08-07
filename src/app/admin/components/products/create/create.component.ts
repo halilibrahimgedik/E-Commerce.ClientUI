@@ -4,6 +4,7 @@ import { CreateProduct } from '../../../../contracts/products/create_product';
 import { BaseComponent, SpinnerType } from '../../../../base/base.component';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AlertifyService, MessageType, Position } from '../../../../services/admin/alertify.service';
+import { FileUploadOptions } from '../../../../services/common/file-upload/file-upload.component';
 
 @Component({
   selector: 'app-create',
@@ -11,6 +12,15 @@ import { AlertifyService, MessageType, Position } from '../../../../services/adm
   styleUrl: './create.component.scss'
 })
 export class CreateComponent extends BaseComponent {
+
+  // fileUpload için eklendi
+  @Output() fileUploadOptions: Partial<FileUploadOptions> = {
+    action: "Upload",
+    controller: "Tests",
+    explanation: "Resimleri sürükleyin veya seçin...",
+    isAdminPage: true,
+    accept:".png, .jpg, .jpeg",
+  };
 
   constructor(private productService: ProductService,spinner: NgxSpinnerService, private alertifyService: AlertifyService)
   {
