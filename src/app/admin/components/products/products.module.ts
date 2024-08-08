@@ -13,9 +13,9 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableModule} from '@angular/material/table';
 import { DeleteDirective } from '../../../directives/admin/delete.directive';
 import { Delete2Directive } from '../../../directives/admin/delete2.directive';
-import {MatDialogModule} from '@angular/material/dialog';
-import { DeleteDialogComponent } from '../../../dialogs/delete-dialog/delete-dialog.component';
 import { FileUploadModule } from '../../../services/common/file-upload/file-upload.module';
+import { DialogModule } from '../../../dialogs/dialog.module';
+
 
 @NgModule({
   declarations: [
@@ -24,7 +24,6 @@ import { FileUploadModule } from '../../../services/common/file-upload/file-uplo
     ListComponent,
     DeleteDirective,
     Delete2Directive,
-    DeleteDialogComponent
   ],
   imports: [
     CommonModule,
@@ -38,8 +37,8 @@ import { FileUploadModule } from '../../../services/common/file-upload/file-uplo
     ]),
     MatTableModule,
     MatPaginatorModule,
-    MatDialogModule,
-    FileUploadModule
+    FileUploadModule,
+    DialogModule
   ]
 })
 export class ProductsModule { }

@@ -2,9 +2,9 @@ import { Component, Input } from '@angular/core';
 import { NgxFileDropEntry } from 'ngx-file-drop';
 import { CustomHttpClientService } from '../custom-http-client.service';
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { error } from 'console';
-import { AlertifyService } from '../../admin/alertify.service';
 import { CustomToastrService, ToastrMessageType, ToastrPosition } from '../../ui/custom-toastr.service';
+import { FileUploadDialogComponent, FileUploadDialogState } from '../../../dialogs/file-upload-dialog/file-upload-dialog.component';
+import { DialogService } from '../dialog.service';
 
 @Component({
   selector: 'app-file-upload',
@@ -15,50 +15,64 @@ export class FileUploadComponent {
 
   constructor(
     private customHttpService: CustomHttpClientService,
-    private alertifyService: AlertifyService,
-    private customToastrService: CustomToastrService
+    private customToastrService: CustomToastrService,
+    private dialogService: DialogService
   ){}
-
-  @Input() options: Partial<FileUploadOptions>;
 
   public files: NgxFileDropEntry[];
 
+  
+  @Input() options: Partial<FileUploadOptions>;
+
   public selectedFiles(files: NgxFileDropEntry[]) {
     this.files = files;
-    const fileData: FormData = new FormData();
+    const formData: FormData = new FormData(); // gelen resimleri FormData'ya ekleyip api'ye istek atacağız
     for(const file of files){
       (file.fileEntry as FileSystemFileEntry).file((_file: File) => {
-        fileData.append(_file.name, _file, file.relativePath);
+        formData.append(_file.name, _file, file.relativePath);
       });
     }
 
-    this.customHttpService.post({
-      controller: this.options.controller,
-      action: this.options.action,
-      queryString: this.options.queryString,
-      headers: new HttpHeaders({"responseType": "blob"})
-    }, fileData).subscribe({
-      next: (data) => {
-        this.customToastrService.message("Dosyalar Başarıyla Yüklenmiştir.",{
-          messageType: ToastrMessageType.Success,
-          Position: ToastrPosition.Top_Right
+    this.dialogService.openDialog({
+      afterClosed: () => {
+        this.customHttpService.post({
+          controller: this.options.controller,
+          action: this.options.action,
+          queryString: this.options.queryString,
+          headers: new HttpHeaders({"responseType": "blob"})
+        }, formData).subscribe({
+          next: (data) => {
+            this.customToastrService.message("Seçilen dosyalar Başarılı bir şekilde Yüklenmiştir.",{
+              messageType: ToastrMessageType.Success,
+              Position: ToastrPosition.Top_Right,
+              TimeOut: 3000,
+              Title: "Yükleme Başarılı"
+            })
+          },
+          error: (error: HttpErrorResponse) => {
+            if(this.options.isAdminPage)
+            {
+              this.customToastrService.message(error.message,{
+                messageType: ToastrMessageType.Error,
+                Position: ToastrPosition.Top_Right,
+                TimeOut: 3000,
+                Title: "Yükleme Başarısız"
+              })
+            }else{
+              this.customToastrService.message("Dosyalar yüklenirken bir hata meydana geldi.",{
+                messageType: ToastrMessageType.Error,
+                Position: ToastrPosition.Top_Right,
+                TimeOut: 3000,
+                Title: "Yükleme Başarısız"
+              })
+            }
+          }
         })
       },
-      error: (error: HttpErrorResponse) => {
-        if(this.options.isAdminPage)
-        {
-          this.customToastrService.message(error.message,{
-            messageType: ToastrMessageType.Error,
-            Position: ToastrPosition.Top_Right
-          })
-        }else{
-          this.customToastrService.message("Dosyalar yüklenirken bir hata meydana geldi.",{
-            messageType: ToastrMessageType.Error,
-            Position: ToastrPosition.Top_Right
-          })
-        }
-      }
-    })
+      dialogComponentType: FileUploadDialogComponent,
+      data: FileUploadDialogState.Yes,
+    });
+   
   }
 }
 

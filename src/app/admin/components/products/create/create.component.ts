@@ -22,6 +22,7 @@ export class CreateComponent extends BaseComponent {
     accept:".png, .jpg, .jpeg",
   };
 
+
   constructor(private productService: ProductService,spinner: NgxSpinnerService, private alertifyService: AlertifyService)
   {
     super(spinner);
